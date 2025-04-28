@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Link } from 'react-router-dom';
 import { getAllTopics } from '../../services/topicService';
 import { AuthContext } from '../../contexts/AuthContext';
 import TopicForm from './TopicForm';
@@ -9,7 +8,6 @@ import {
   FaBookOpen, 
   FaExclamationTriangle, 
   FaSyncAlt, 
-  FaArrowRight 
 } from 'react-icons/fa';
 import './TopicList.css';
 
@@ -19,30 +17,6 @@ const ICON_MAPPINGS = {
   'JavaScript Basics': '/assets/images/js-icon.png',
   'Web APIs': '/assets/images/api-icon.png',
   'CSS and Styling': '/assets/images/css-icon.png'
-};
-
-// Custom background colors for each topic
-const TOPIC_COLORS = {
-  'React Fundamentals': {
-    background: '#e6f7ff',
-    border: '#61dafb',
-    gradient: 'linear-gradient(45deg, #61dafb20, #61dafb40)'
-  },
-  'JavaScript Basics': {
-    background: '#fff9e6',
-    border: '#f7df1e',
-    gradient: 'linear-gradient(45deg, #f7df1e20, #f7df1e40)'
-  },
-  'Web APIs': {
-    background: '#f6f6f6',
-    border: '#6a6a6a',
-    gradient: 'linear-gradient(45deg, #6a6a6a20, #6a6a6a40)'
-  },
-  'CSS and Styling': {
-    background: '#f0f7ff',
-    border: '#2965f1',
-    gradient: 'linear-gradient(45deg, #2965f120, #2965f140)'
-  }
 };
 
 const TopicsList = () => {
@@ -60,7 +34,14 @@ const TopicsList = () => {
     try {
       setLoading(true);
       const topicsData = await getAllTopics();
-      setTopics(topicsData);
+      
+      // Add iconUrl to each topic
+      const topicsWithIcons = topicsData.map(topic => ({
+        ...topic,
+        iconUrl: topic.iconUrl || ICON_MAPPINGS[topic.name] || '/assets/images/default-profile.png'
+      }));
+      
+      setTopics(topicsWithIcons);
       setError(null);
     } catch (err) {
       setError('Failed to load topics. Please try again later.');
@@ -73,6 +54,15 @@ const TopicsList = () => {
   const handleTopicAdded = (newTopic) => {
     setTopics([...topics, newTopic]);
     setShowAddForm(false);
+  };
+
+  const handleDelete = async (topicId) => {
+    try {
+      // This would be replaced with an actual API call
+      setTopics(topics.filter(topic => topic.id !== topicId));
+    } catch (err) {
+      setError('Failed to delete topic. Please try again.');
+    }
   };
 
   if (loading) {
@@ -150,47 +140,14 @@ const TopicsList = () => {
         </div>
       ) : (
         <div className="topics-grid">
-          {topics.map((topic, index) => {
-            const colors = TOPIC_COLORS[topic.name] || { 
-              background: 'white', 
-              border: '#f0f0f0',
-              gradient: 'linear-gradient(45deg, #f0f0f020, #f0f0f040)'
-            };
-            
-            const iconPath = ICON_MAPPINGS[topic.name] || `/assets/images/default-icon.png`;
-            
-            return (
-              <Link 
-                to={`/topics/${topic.id}`} 
-                className="topic-card" 
-                key={topic.id}
-                style={{
-                  animationDelay: `${index * 0.1}s`
-                }}
-              >
-                <div className="card-background" style={{ background: colors.gradient }}></div>
-                <div className="topic-icon" style={{ 
-                  background: colors.background,
-                  borderColor: colors.border
-                }}>
-                  <img 
-                    src={iconPath}
-                    alt={topic.name} 
-                    onError={(e) => {
-                      e.target.src = '/assets/images/default-profile.png';
-                    }}
-                  />
-                </div>
-                <h2>{topic.name}</h2>
-                <p>{topic.description}</p>
-                <div className="topic-card-footer">
-                  <span className="view-details">
-                    View Details <FaArrowRight size={22} />
-                  </span>
-                </div>
-              </Link>
-            );
-          })}
+          {topics.map((topic) => (
+            <TopicCard
+              key={topic.id}
+              topic={topic}
+              isAdmin={user && user.isFacilitator}
+              onDelete={() => handleDelete(topic.id)}
+            />
+          ))}
         </div>
       )}
     </div>

@@ -10,6 +10,7 @@
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   overflow: hidden;
   text-align: center;
+  min-height: 450px; /* Increased from 400px to accommodate admin buttons */
 }
 
 .topic-card:hover {
@@ -52,32 +53,36 @@
 
 .topic-icon {
   position: relative;
-  width: 140px;
-  height: 140px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   margin-bottom: 1.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1;
-  border: 3px solid;
-  padding: 0.3rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: 4px solid #f0f7ff;
+  padding: 5px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
   background-color: white;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
 }
 
 .topic-card:hover .topic-icon {
-  transform: scale(1.1);
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+  border-color: var(--primary-color, #4a6bff);
 }
 
 .topic-icon img {
-  width: 90%;
-  height: 90%;
+  width: 85%;
+  height: 85%;
   object-fit: contain;
   object-position: center;
   transition: transform 0.3s ease;
+  min-width: 100px;
+  min-height: 100px;
 }
 
 .topic-card h2 {
@@ -145,6 +150,9 @@
   color: #4a6bff;
   width: 100%;
   height: 100%;
+  background-color: #e6f7ff;
+  border-radius: 50%;
+  text-transform: uppercase;
 }
 
 .topic-meta {
@@ -163,8 +171,16 @@
   color: var(--primary-color, #4a6bff);
 }
 
-.view-btn, .edit-btn, .delete-btn {
-  display: flex;
+.topic-card-actions {
+  width: 100%;
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid #f0f0f0;
+  text-align: right;
+}
+
+.view-btn {
+  display: inline-flex;
   align-items: center;
   gap: 6px;
   font-weight: 500;
@@ -173,38 +189,63 @@
   transition: all 0.2s ease;
 }
 
-.view-btn svg, .edit-btn svg, .delete-btn svg {
+.view-btn svg {
   transition: transform 0.2s ease;
 }
 
-.view-btn:hover svg, .edit-btn:hover svg, .delete-btn:hover svg {
+.view-btn:hover svg {
   transform: translateX(3px);
+}
+
+.admin-actions-container {
+  width: 100%;
+  margin-top: 1rem;
+  padding-top: 0.5rem;
+  border-top: 1px dashed #e8e8e8;
 }
 
 .admin-actions {
   display: flex;
-  gap: 12px;
-  margin-top: 10px;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.edit-btn, .delete-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
 }
 
 .edit-btn {
   color: #4a6bff;
+  background-color: rgba(74, 107, 255, 0.05);
+}
+
+.edit-btn:hover {
+  background-color: rgba(74, 107, 255, 0.1);
 }
 
 .delete-btn {
-  background: none;
+  background-color: rgba(255, 77, 79, 0.05);
   border: none;
   cursor: pointer;
-  padding: 0;
   font-size: inherit;
   font-family: inherit;
   color: #ff4d4f;
 }
 
+.delete-btn:hover {
+  background-color: rgba(255, 77, 79, 0.1);
+}
+
 @media (max-width: 768px) {
   .topic-icon {
-    width: 120px;
-    height: 120px;
+    width: 100px;
+    height: 100px;
   }
   
   .topic-card h2 {
@@ -218,15 +259,43 @@
 
 /* Additional styles to ensure icons are clearly visible */
 svg {
-  min-width: 24px;
-  min-height: 24px;
+  min-width: 32px !important;
+  min-height: 32px !important;
+  width: 32px !important;
+  height: 32px !important;
+  font-size: 32px !important;
 }
 
 .topic-date svg,
 .view-btn svg,
 .edit-btn svg,
-.delete-btn svg {
-  min-width: 32px;
-  min-height: 32px;
-  font-size: 32px;
+.delete-btn svg,
+.topic-card-footer svg,
+.view-details svg,
+.admin-actions svg {
+  min-width: 32px !important;
+  min-height: 32px !important;
+  width: 32px !important;
+  height: 32px !important;
+  font-size: 32px !important;
+}
+
+/* Fix vertical alignment of icons with text */
+.topic-date,
+.view-btn,
+.edit-btn,
+.delete-btn,
+.view-details {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+/* Topic card body - making sure there's enough space */
+.topic-card-body {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
 } 

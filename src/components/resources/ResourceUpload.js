@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthContext';
 import { uploadResource } from '../../services/resourceService';
 import { getAllTopics } from '../../services/topicService';
+import { storage } from '../../firebase/config'; // Import Firebase Storage
 import './ResourceUpload.css';
 
 const ResourceUpload = () => {
@@ -46,7 +47,12 @@ const ResourceUpload = () => {
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
-      // In a real app, you'd validate the file type here
+      // Validate file type
+      const validTypes = fileType === 'pdf' ? ['application/pdf'] : ['application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation'];
+      if (!validTypes.includes(selectedFile.type)) {
+        setError(`Please upload a valid ${fileType.toUpperCase()} file.`);
+        return;
+      }
       setFile(selectedFile);
     }
   };
@@ -69,10 +75,14 @@ const ResourceUpload = () => {
     setLoading(true);
     
     try {
-      // In a real app, you'd upload the file to a server here
-      // For this demo, we'll simulate file upload
-      const fileUrl = `/assets/mock/${file.name}`;
-      
+      // Upload file to Firebase Storage
+      console.log('Uploading file:', file.name);
+      const storageRef = storage.ref(`resources/${file.name}`);
+      await storageRef.put(file);
+      const fileUrl = await storageRef.getDownloadURL();
+      console.log('Uploaded fileUrl:', fileUrl);
+
+      // Save resource metadata
       await uploadResource({
         title,
         description,
@@ -82,7 +92,8 @@ const ResourceUpload = () => {
         uploader: {
           id: user.id,
           name: user.name
-        }
+        },
+        uploadDate: new Date().toISOString()
       });
       
       setSuccess(true);
@@ -96,7 +107,6 @@ const ResourceUpload = () => {
       setTimeout(() => {
         navigate(`/topics/${selectedTopic}`);
       }, 2000);
-      
       
     } catch (err) {
       setError('Failed to upload resource. Please try again.');

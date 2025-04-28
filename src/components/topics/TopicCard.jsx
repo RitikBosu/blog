@@ -20,12 +20,36 @@ const TopicCard = ({ topic, onDelete, isAdmin }) => {
     });
   };
 
+  // Handle image error
+  const handleImageError = (e) => {
+    console.log("Image failed to load:", e.target.src);
+    e.target.onerror = null; // Prevent infinite loop
+    e.target.src = `/assets/images/default-profile.png`;
+  };
+
+  // Ensure icon URL has the correct path
+  const getIconUrl = (url) => {
+    if (!url) return null;
+    
+    // If it's already absolute, use as is
+    if (url.startsWith('http') || url.startsWith('/')) {
+      return url;
+    }
+    
+    // Otherwise prepend the public path
+    return `/assets/images/${url}`;
+  };
+
   return (
     <div className="topic-card">
       <div className="topic-card-header">
         <div className="topic-icon">
           {topic.iconUrl ? (
-            <img src={topic.iconUrl} alt={`Icon for ${topic.name}`} />
+            <img 
+              src={getIconUrl(topic.iconUrl)} 
+              alt={`Icon for ${topic.name}`} 
+              onError={handleImageError}
+            />
           ) : (
             <div className="default-icon">{topic.name.charAt(0)}</div>
           )}
@@ -38,32 +62,36 @@ const TopicCard = ({ topic, onDelete, isAdmin }) => {
         
         <div className="topic-meta">
           <div className="topic-date">
-            <FaCalendarAlt size={32} />
+            <FaCalendarAlt size={24} />
             <span>Created: {formatDate(topic.createdAt)}</span>
           </div>
         </div>
       </div>
       
-      <div className="topic-card-footer">
+      {/* View details button */}
+      <div className="topic-card-actions">
         <Link to={`/topics/${topic.id}`} className="view-btn">
-          View Details <FaArrowRight size={32} />
+          View Details <FaArrowRight size={24} />
         </Link>
-        
-        {isAdmin && (
+      </div>
+      
+      {/* Admin actions shown only for admins */}
+      {isAdmin && (
+        <div className="admin-actions-container">
           <div className="admin-actions">
             <Link to={`/topics/edit/${topic.id}`} className="edit-btn">
-              <FaEdit size={32} /> Edit
+              <FaEdit size={20} /> Edit
             </Link>
             <button 
               onClick={() => onDelete(topic.id)} 
               className="delete-btn"
               aria-label={`Delete ${topic.name}`}
             >
-              <FaTrash size={32} /> Delete
+              <FaTrash size={20} /> Delete
             </button>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

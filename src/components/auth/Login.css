@@ -251,8 +251,8 @@
 }
 
 .login-info {
-  margin-top: 35px;
-  padding-top: 25px;
+  margin-top: 25px;
+  padding-top: 20px;
   border-top: 1px solid var(--border-color);
   animation: fadeIn 0.8s var(--animation-curve) forwards;
   animation-delay: 0.7s;
@@ -319,4 +319,47 @@
   .form-group input {
     padding: 12px 15px;
   }
+}
+
+/* Add styling for signup section after login-btn styles */
+.signup-section {
+  margin-top: 20px;
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
+  animation: fadeIn 0.8s var(--animation-curve) forwards;
+  animation-delay: 0.65s;
+  opacity: 0;
+}
+
+.signup-section p {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+
+.signup-btn {
+  width: 100%;
+  padding: 12px;
+  background: transparent;
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s var(--animation-curve);
+  position: relative;
+  overflow: hidden;
+}
+
+.signup-btn:hover {
+  background-color: rgba(74, 107, 255, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(74, 107, 255, 0.2);
+}
+
+.signup-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 5px rgba(74, 107, 255, 0.1);
 }

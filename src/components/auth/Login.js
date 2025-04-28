@@ -28,6 +28,13 @@ const Login = () => {
     }
   };
 
+  const handleSignup = () => {
+    // For demo purposes, we'll just show an alert
+    alert("Sign up functionality would be implemented here");
+    // In a real app, you would navigate to a signup page
+    // navigate('/signup');
+  };
+
   return (
     <div className="login-container">
       <div className="login-card">
@@ -58,6 +65,18 @@ const Login = () => {
             {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
+        
+        <div className="signup-section">
+          <p>Don't have an account?</p>
+          <button 
+            type="button" 
+            className="signup-btn" 
+            onClick={handleSignup}
+          >
+            Sign Up
+          </button>
+        </div>
+        
         <div className="login-info">
           <p>Demo Accounts:</p>
           <ul>

@@ -1,10 +1,13 @@
+// COMPLETELY REWRITE THE FILE WITH NO FIREBASE REFERENCES
+// Mock topic data service without any external dependencies
+
 // Mock topic data with placeholder icons
 const mockTopics = [
   {
     id: '1',
     name: 'React Fundamentals',
     description: 'Learn the core concepts of React, components, props, and state management',
-    icon: 'react-icon.png',
+    iconUrl: '/assets/images/react-icon.png',
     createdAt: new Date('2023-12-10'),
     createdBy: '2'
   },
@@ -12,7 +15,7 @@ const mockTopics = [
     id: '2',
     name: 'JavaScript Basics',
     description: 'Master the fundamentals of JavaScript programming language',
-    icon: 'js-icon.png',
+    iconUrl: '/assets/images/js-icon.png',
     createdAt: new Date('2023-12-12'),
     createdBy: '3'
   },
@@ -20,7 +23,7 @@ const mockTopics = [
     id: '3',
     name: 'Web APIs',
     description: 'Explore how to work with various web APIs and integrate them in your applications',
-    icon: 'api-icon.png',
+    iconUrl: '/assets/images/api-icon.png',
     createdAt: new Date('2023-12-15'),
     createdBy: '2'
   },
@@ -28,7 +31,7 @@ const mockTopics = [
     id: '4',
     name: 'CSS and Styling',
     description: 'Learn modern CSS techniques, layouts, animations, and responsive design',
-    icon: 'css-icon.png',
+    iconUrl: '/assets/images/css-icon.png',
     createdAt: new Date('2023-12-18'),
     createdBy: '3'
   }

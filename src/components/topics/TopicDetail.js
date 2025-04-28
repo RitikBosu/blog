@@ -57,6 +57,22 @@ const TopicDetail = () => {
     );
   }
 
+  // Function to get the correct image URL
+  const getImageUrl = () => {
+    // If topic has iconUrl property, use that directly
+    if (topic.iconUrl) {
+      return topic.iconUrl;
+    }
+    
+    // If topic has icon property (old format), prepend the path
+    if (topic.icon) {
+      return `/assets/images/${topic.icon}`;
+    }
+    
+    // Default fallback
+    return '/assets/images/default-icon.png';
+  };
+
   return (
     <div className="topic-detail-container">
       <div className="topic-header">
@@ -64,9 +80,10 @@ const TopicDetail = () => {
         <div className="topic-header-content">
           <div className="topic-header-icon">
             <img 
-              src={`/assets/images/${topic.icon}`} 
+              src={getImageUrl()} 
               alt={topic.name}
               onError={(e) => {
+                console.log("Image failed to load:", e.target.src);
                 e.target.onerror = null;
                 e.target.src = '/assets/images/default-icon.png';
               }}
@@ -87,7 +104,7 @@ const TopicDetail = () => {
               className="upload-resource-btn" 
               onClick={handleUploadClick}
             >
-              <FaUpload /> Upload Resource
+              <FaUpload size={24} /> Upload Resource
             </button>
           )}
         </div>

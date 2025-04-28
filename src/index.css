@@ -1,3 +1,23 @@
+/* Global icon styles to ensure they're all visible */
+svg {
+  min-width: 32px !important;
+  min-height: 32px !important;
+  width: 32px !important;
+  height: 32px !important;
+  font-size: 32px !important;
+  display: inline-block !important;
+}
+
+/* Extra emphasis for icon containers */
+[class*="icon"],
+[class*="Icon"],
+[class*="-btn"],
+[class*="Button"] {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
 /* Base reset */
 * {
   margin: 0;
